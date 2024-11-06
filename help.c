@@ -612,14 +612,14 @@ static const char bad_interpreter_advice[] =
 	N_("'%s' appears to be a git command, but we were not\n"
 	"able to execute it. Maybe git-%s is broken?");
 
-const char *help_unknown_cmd(const char *cmd)
+char *help_unknown_cmd(const char *cmd)
 {
 	struct help_unknown_cmd_config cfg = { 0 };
 	int i, n, best_similarity = 0;
 	struct cmdnames main_cmds = { 0 };
 	struct cmdnames other_cmds = { 0 };
 	struct cmdname_help *common_cmds;
-	const char *assumed = NULL;
+	char *assumed = NULL;
 
 	read_early_config(the_repository, git_unknown_cmd_config, &cfg);
 
@@ -696,9 +696,8 @@ const char *help_unknown_cmd(const char *cmd)
 			; /* still counting */
 	}
 	if (cfg.autocorrect && n == 1 && SIMILAR_ENOUGH(best_similarity)) {
-		assumed = main_cmds.names[0]->name;
-		main_cmds.names[0] = NULL;
-		cmdnames_release(&main_cmds);
+		assumed = xstrdup(main_cmds.names[0]->name);
+
 		fprintf_ln(stderr,
 			   _("WARNING: You called a Git command named '%s', "
 			     "which does not exist."),
@@ -716,7 +715,7 @@ const char *help_unknown_cmd(const char *cmd)
 			strbuf_release(&msg);
 			if (!(starts_with(answer, "y") ||
 			      starts_with(answer, "Y"))) {
-				assumed = NULL;
+				FREE_AND_NULL(assumed);
 				goto out;
 			}
 		} else {
