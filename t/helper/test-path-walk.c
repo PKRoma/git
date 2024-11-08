@@ -85,7 +85,6 @@ int cmd__path_walk(int argc, const char **argv)
 		OPT_END(),
 	};
 
-	initialize_repository(the_repository);
 	setup_git_directory();
 	revs.repo = the_repository;
 
@@ -110,5 +109,6 @@ int cmd__path_walk(int argc, const char **argv)
 	       "tags:%" PRIuMAX "\n",
 	       data.commit_nr, data.tree_nr, data.blob_nr, data.tag_nr);
 
+	release_revisions(&revs);
 	return res;
 }
