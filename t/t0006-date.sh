@@ -164,6 +164,7 @@ check_approxidate() {
 }
 
 check_approxidate now '2009-08-30 19:20:00'
+check_approxidate today '2009-08-30 00:00:00'
 check_approxidate '5 seconds ago' '2009-08-30 19:19:55'
 check_approxidate 5.seconds.ago '2009-08-30 19:19:55'
 check_approxidate 10.minutes.ago '2009-08-30 19:10:00'
@@ -187,6 +188,7 @@ check_approxidate 'last tuesday' '2009-08-25 19:20:00'
 check_approxidate 'July 5th' '2009-07-05 19:20:00'
 check_approxidate '06/05/2009' '2009-06-05 19:20:00'
 check_approxidate '06.05.2009' '2009-05-06 19:20:00'
+check_approxidate 'Jan 5 today' '2009-01-30 00:00:00'
 
 check_approxidate 'Jun 6, 5AM' '2009-06-06 05:00:00'
 check_approxidate '5AM Jun 6' '2009-06-06 05:00:00'
